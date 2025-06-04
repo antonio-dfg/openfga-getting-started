@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenFGA Authorization Tester</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-shield-alt"></i> OpenFGA Authorization Tester</h1>
+            <p>Test your document sharing authorization system</p>
+        </header>
+
+        <div class="grid">
+            <!-- Authorization Check Section -->
+            <div class="card">
+                <h2><i class="fas fa-search"></i> Check Authorization</h2>
+                <form id="checkForm">
+                    <div class="form-group">
+                        <label for="checkUser">User:</label>
+                        <input type="text" id="checkUser" placeholder="e.g., user:alice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkRelation">Relation:</label>
+                        <select id="checkRelation" required>
+                            <option value="">Select relation...</option>
+                            <option value="can_read">can_read</option>
+                            <option value="can_write">can_write</option>
+                            <option value="owner">owner</option>
+                            <option value="editor">editor</option>
+                            <option value="viewer">viewer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkObject">Object:</label>
+                        <input type="text" id="checkObject" placeholder="e.g., document:doc1" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Check Permission
+                    </button>
+                </form>
+                <div id="checkResult" class="result"></div>
+            </div>
+
+            <!-- Document Management Section -->
+            <div class="card">
+                <h2><i class="fas fa-file-alt"></i> Document Management</h2>
+                
+                <h3>Create Document Ownership</h3>
+                <form id="ownerForm">
+                    <div class="form-group">
+                        <label for="ownerUserId">User ID:</label>
+                        <input type="text" id="ownerUserId" placeholder="e.g., alice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerDocId">Document ID:</label>
+                        <input type="text" id="ownerDocId" placeholder="e.g., doc1" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-crown"></i> Create Ownership
+                    </button>
+                </form>
+
+                <h3>Share Document</h3>
+                <form id="shareForm">
+                    <div class="form-group">
+                        <label for="shareUserId">User ID:</label>
+                        <input type="text" id="shareUserId" placeholder="e.g., bob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="shareDocId">Document ID:</label>
+                        <input type="text" id="shareDocId" placeholder="e.g., doc1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sharePermission">Permission:</label>
+                        <select id="sharePermission" required>
+                            <option value="">Select permission...</option>
+                            <option value="editor">Editor</option>
+                            <option value="viewer">Viewer</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-info">
+                        <i class="fas fa-share"></i> Share Document
+                    </button>
+                </form>
+                
+                <div id="documentResult" class="result"></div>
+            </div>
+
+            <!-- Quick Access Section -->
+            <div class="card">
+                <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                
+                <div class="quick-actions">
+                    <button id="setupExampleData" class="btn btn-warning">
+                        <i class="fas fa-database"></i> Setup Example Data
+                    </button>
+                    
+                    <button id="clearResults" class="btn btn-secondary">
+                        <i class="fas fa-eraser"></i> Clear Results
+                    </button>
+                </div>
+
+                <h3>Quick Tests</h3>
+                <div class="quick-tests">
+                    <button class="btn btn-outline test-btn" data-test="alice-read-doc1">
+                        Can Alice read doc1?
+                    </button>
+                    <button class="btn btn-outline test-btn" data-test="bob-write-doc1">
+                        Can Bob write doc1?
+                    </button>
+                    <button class="btn btn-outline test-btn" data-test="charlie-write-doc1">
+                        Can Charlie write doc1?
+                    </button>
+                    <button class="btn btn-outline test-btn" data-test="alice-read-doc2">
+                        Can Alice read doc2?
+                    </button>
+                </div>
+                
+                <div id="quickResult" class="result"></div>
+            </div>
+
+            <!-- System Status Section -->
+            <div class="card">
+                <h2><i class="fas fa-heartbeat"></i> System Status</h2>
+                
+                <div class="status-grid">
+                    <div class="status-item">
+                        <i class="fas fa-server"></i>
+                        <span>API Server</span>
+                        <span id="apiStatus" class="status-indicator">Checking...</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>OpenFGA Server</span>
+                        <span id="fgaStatus" class="status-indicator">Checking...</span>
+                    </div>
+                    <div class="status-item">
+                        <i class="fas fa-database"></i>
+                        <span>Database</span>
+                        <span id="dbStatus" class="status-indicator">Checking...</span>
+                    </div>
+                </div>
+
+                <div class="links">
+                    <a href="http://localhost:3000/playground" target="_blank" class="btn btn-outline">
+                        <i class="fas fa-external-link-alt"></i> OpenFGA Playground
+                    </a>
+                    <a href="/health" target="_blank" class="btn btn-outline">
+                        <i class="fas fa-heartbeat"></i> Health Check
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Panel -->
+        <div id="resultsPanel" class="results-panel">
+            <h3><i class="fas fa-list"></i> Results</h3>
+            <div id="allResults"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

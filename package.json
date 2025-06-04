@@ -1,0 +1,31 @@
+{
+  "name": "openfga-getting-started",
+  "version": "1.0.0",
+  "description": "Simple OpenFGA Authorization Project",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "setup": "node scripts/setup.js",
+    "test": "jest"
+  },
+  "keywords": ["openfga", "authorization", "authz", "rbac", "rebac"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@openfga/sdk": "^0.3.5",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.5.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6",
+    "jest": "^29.6.2",
+    "@types/jest": "^29.5.4"
+  }
+} 
